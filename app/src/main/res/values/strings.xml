@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Spotify</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">794891438941-bkjqcpq06t408e5vbbub25nelnu5mmkh.apps.googleusercontent.com</string>
+
+</resources>

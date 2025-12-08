@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "794891438941",
+    "project_id": "melodyhub-e260e",
+    "storage_bucket": "melodyhub-e260e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794891438941:android:a460c235fe211395b676b4",
+        "android_client_info": {
+          "package_name": "com.example.spotify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794891438941-bkjqcpq06t408e5vbbub25nelnu5mmkh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spotify",
+            "certificate_hash": "02846bdb2fbaea82426924d32c407b7108e6a5e4"
+          }
+        },
+        {
+          "client_id": "794891438941-9noqsjse5piq33br1085339gsgvn1r6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlwG5zlIdN5CZTPtNeKekvOJs_XiFUkcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794891438941-9noqsjse5piq33br1085339gsgvn1r6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

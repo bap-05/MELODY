@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/xanh"
+    tools:context=".views.fragments.ThemNSFragment">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm nghệ sĩ"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <ProgressBar
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/progress_bar_themNS"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone"
+        android:progressTint="#00DB0B"
+        tools:visibility="visible"/>
+    <LinearLayout
+        android:layout_margin="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/img_avt_themNS"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            />
+
+        <Button
+            android:id="@+id/btn_chonanh_themNS"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:text="Chọn ảnh"
+            android:background="@drawable/custom_btndk"
+            app:backgroundTint="@null"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/txt_ten_themNS"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_txtdn"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="20dp"
+        android:hint="Nhập tên nghệ sĩ..."
+        android:textColor="@color/white"
+        android:textColorHint="#A2A2A2"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/btn_them_themNS"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_btndk"
+        app:backgroundTint="@null"
+        android:layout_marginTop="100dp"
+        android:text="Thêm"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

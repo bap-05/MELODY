@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/selector_home_icon"
+        android:title="Trang chủ" />
+
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/selector_search_icon"
+        android:title="Tìm kiếm" />
+
+    <item
+        android:id="@+id/nav_rell"
+        android:icon="@drawable/selector_reel_icon"
+        android:title="Rell" />
+    <item
+        android:id="@+id/nav_pri"
+        android:icon="@drawable/selector_pri_icon"
+        android:title="Primeum" />
+    <item
+        android:id="@+id/nav_tao"
+        android:icon="@drawable/selector_tao_icon"
+        android:title="Tạo" />
+</menu>
