@@ -2,52 +2,45 @@ package com.example.spotify.views;
 
 import android.annotation.SuppressLint;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.view.View;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
-import com.cloudinary.android.MediaManager;
 import com.example.spotify.R;
 import com.example.spotify.Service.MusicService;
-import com.example.spotify.Service.MusicServiceHelper;
 import com.example.spotify.adapter.ReelAdapter;
 import com.example.spotify.models.Music;
-import com.example.spotify.views.fragments.DNhapemailFragment;
-import com.example.spotify.views.fragments.FooterFragment;
 import com.example.spotify.views.fragments.HomeFragment;
-import com.example.spotify.views.fragments.PlayMusicFragment;
-import com.example.spotify.views.fragments.ReelFragment;
-import com.example.spotify.views.fragments.UploadMusicFragment;
 import com.example.spotify.views.fragments.WellcomeFragment;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
     public Fragment frsave;
+    public BottomNavigationView bottomNav;
+    public int id;
 //    @SuppressLint("MissingInflatedId")
     @Override
+    @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
@@ -59,24 +52,38 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+
+// 2. Tìm BottomNavigationView
+         bottomNav = findViewById(R.id.bottom_navigation);
+        int mauCuaToi = android.graphics.Color.parseColor("#00FFFFFF");
+        bottomNav.setItemActiveIndicatorColor(ColorStateList.valueOf(mauCuaToi));
+// 3. QUAN TRỌNG: Liên kết chúng lại với nhau
+        NavigationUI.setupWithNavController(bottomNav, navController);
 
         SharedPreferences sharedPreferences = getSharedPreferences("DangNhap",MODE_PRIVATE);
         String ten = sharedPreferences.getString("TenTK",null);
         SharedPreferences spf = getSharedPreferences("DN",MODE_PRIVATE);
         boolean kt = spf.getBoolean("DangDN",false);
-        if(ten!=null)
-        {
-            frsave = new HomeFragment();
-            replaceFragment(frsave,false,0);
-            addFooter(new FooterFragment());
-        }
+        if (ten != null) {
+            // NavOptions giúp xóa lịch sử để khi bấm Back không quay lại màn hình Welcome
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.wellcomeFragment, true)
+                    .build();
 
-        else
-        {
-            frsave = new WellcomeFragment();
-            replaceFragment(frsave,false ,0);
+            // Lưu ý: R.id.homeFragment phải là ID của fragment Home trong nav_graph.xml
+            navController.navigate(R.id.nav_home, null, navOptions);
         }
-
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.wellcomeFragment
+                    || destination.getId() == R.id.dangnhapFragment || destination.getId() == R.id.dangnhapemail) { // Thêm ID màn hình đăng nhập của bạn vào đây
+                bottomNav.setVisibility(View.GONE);
+            } else {
+                bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -155,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
         }
         ft.commit();
     }
-    public void addFooter(Fragment fr)
-    {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.contaier_footer,fr,"footer");
-        fragmentTransaction.commit();
-    }
+//    public void addFooter(Fragment fr)
+//    {
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.contaier_footer,fr,"footer");
+//        fragmentTransaction.commit();
+//    }
 
     public void phatnhac(Music ms){
 

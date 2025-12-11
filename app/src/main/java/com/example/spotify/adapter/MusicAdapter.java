@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotify.R;
@@ -22,6 +23,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.musicViewHol
     private OnItemClickListener listener;
     public interface OnItemClickListener {
         void onItemClick(Music ms);
+        void onMoreClick(Music ms);
     }
     public void updateData(List<Music> newItems) {
         this.mmusicList.clear();
@@ -65,12 +67,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.musicViewHol
     }
 
     class musicViewHolder extends RecyclerView.ViewHolder{
-        private ImageView poster;
-        LinearLayout item_music;
+        private ImageView poster, img_more;
+        ConstraintLayout item_music;
         private TextView txt_tenBaiHat,txt_tacgia;
         public musicViewHolder(@NonNull View itemView) {
             super(itemView);
             poster = itemView.findViewById(R.id.poster);
+            img_more = itemView.findViewById(R.id.img_music_more);
             item_music = itemView.findViewById(R.id.item_music);
             txt_tenBaiHat = itemView.findViewById(R.id.txt_tenBaiHat);
             txt_tacgia = itemView.findViewById(R.id.txt_tacgia);
@@ -81,6 +84,19 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.musicViewHol
                         int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(mmusicList.get(position));
+                        }
+                    }
+                }
+            });
+            img_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                    {
+                        int vitri = getBindingAdapterPosition();
+                        if(vitri != RecyclerView.NO_POSITION)
+                        {
+                            listener.onMoreClick(mmusicList.get(vitri));
                         }
                     }
                 }

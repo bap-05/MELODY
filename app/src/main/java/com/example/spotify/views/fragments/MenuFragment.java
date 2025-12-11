@@ -67,9 +67,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         {
             ((MainActivity)requireActivity()).frsave = new WellcomeFragment();
             ((MainActivity)requireActivity()).openFragment(((MainActivity)requireActivity()).frsave,0);
-            SharedPreferences sp = requireContext().getSharedPreferences("DN",MODE_PRIVATE);
+            SharedPreferences sp = requireContext().getSharedPreferences("DangNhap",MODE_PRIVATE);
             SharedPreferences.Editor edt = sp.edit();
-            edt.putBoolean("DangDN",false);
+            edt.clear();
             edt.apply();
             PlayMusicFragment playlist = (PlayMusicFragment) getParentFragmentManager().findFragmentByTag("PlayMusic");
             ViewMusicFragment viewMuic = (ViewMusicFragment) getParentFragmentManager().findFragmentByTag("music");

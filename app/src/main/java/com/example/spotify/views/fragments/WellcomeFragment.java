@@ -3,6 +3,7 @@ package com.example.spotify.views.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,6 @@ public class WellcomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_dn)
-            ((MainActivity) requireActivity()).openFragment(new DNhapemailFragment(),0);
+            Navigation.findNavController(v).navigate(R.id.dangnhapFragment);
     }
 }

@@ -258,7 +258,7 @@ public class MusicService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(ms.getTenBaiHat())
                 .setContentText(ms.getTenNgheSi())
-                .setSmallIcon(R.drawable.tb_spotify)
+                .setSmallIcon(R.drawable.logo1)
                 .setLargeIcon(albumArt)
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)

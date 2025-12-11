@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.example.spotify.R;
 import com.example.spotify.Service.MusicServiceHelper;
 import com.example.spotify.adapter.MusicAdapter;
 import com.example.spotify.adapter.NgheSi_1Adapter;
+import com.example.spotify.models.Music;
 import com.example.spotify.viewModels.MusicViewModel;
 import com.example.spotify.viewModels.NghesiViewModel;
 import com.example.spotify.views.MainActivity;
@@ -55,13 +57,11 @@ public class SearchFragment extends Fragment {
         NghesiViewModel nghesiViewModel = new ViewModelProvider(requireActivity()).get(NghesiViewModel.class);
         nghesiViewModel.getNghesilis2().observe(getViewLifecycleOwner(),nslist->{
             if (nslist != null) {
+                hideKeyboard();
                 ngheSi1Adapter.updateData(nslist); // Bạn cần viết hàm updateData trong Adapter
                 ngheSi1Adapter.setListener(ns->{
                     nghesiViewModel.setNghesi(ns);
-                    FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
-                    fr.add(R.id.container_body,new ChiTietNgheSiFragment());
-                    fr.addToBackStack(null);
-                    fr.commit();
+                    Navigation.findNavController(v).navigate(R.id.chitietns);
                 });
             } else {
                 ngheSi1Adapter.updateData(new ArrayList<>());
@@ -71,22 +71,36 @@ public class SearchFragment extends Fragment {
         musicViewModel.getListMusic().observe(getViewLifecycleOwner(),listMS->{
             if (listMS != null) {
                 musicAdapter.updateData(listMS); // Bạn cần viết hàm updateData trong Adapter
-                musicAdapter.setOnItemClickListener(ms->{
-                    hideKeyboard();
-                    MusicServiceHelper.setCurrentSong(ms);
-                    ViewMusicFragment vm = new ViewMusicFragment();
-                    PlayMusicFragment pl = new PlayMusicFragment();
-                    ((MainActivity)requireActivity()).hidenFooter(true);
-                    ((MainActivity) requireActivity()).showFragment(pl, "PlayMusic", false);
-                    ((MainActivity) requireActivity()).addFragmentMusic(vm, "music", false);
-                    ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
-                    PlayMusicFragment pl1 = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
-                    if (vm1 != null) {
-                        vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
+                musicAdapter.setOnItemClickListener(new MusicAdapter.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(Music ms) {
+                        MusicServiceHelper.setCurrentSong(ms);
+                        ViewMusicFragment vm = new ViewMusicFragment();
+                        PlayMusicFragment pl = new PlayMusicFragment();
+//                            vm.setArguments(bl);
+//                            pl.setArguments(bl);
+
+                        ((MainActivity)requireActivity()).hidenFooter(true);
+                        ((MainActivity) requireActivity()).showFragment(pl, "PlayMusic", false);
+                        ((MainActivity) requireActivity()).addFragmentMusic(vm, "music", false);
+                        ((MainActivity) requireActivity()).bottomNav.setVisibility(v.GONE);
+                        ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
+                        PlayMusicFragment pl1 = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
+                        if (vm1 != null) {
+                            vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
+                        }
+                        if (pl1 != null)
+                            pl1.btn_pause.setImageResource(R.drawable.pause);
+                        ((MainActivity)requireActivity()).phatnhac(ms);
                     }
-                    if (pl1 != null)
-                        pl1.btn_pause.setImageResource(R.drawable.pause);
-                    ((MainActivity)requireActivity()).phatnhac(ms);
+
+                    @Override
+                    public void onMoreClick(Music ms) {
+                        MusicServiceHelper.setMusic(ms);
+                        ChiTietMusicFragment chiTietMusicFragment = new ChiTietMusicFragment();
+                        chiTietMusicFragment.show(requireActivity().getSupportFragmentManager(),"more");
+                    }
                 });
             } else {
                 musicAdapter.updateData(new ArrayList<>());
@@ -152,7 +166,12 @@ public class SearchFragment extends Fragment {
 
             return false;
         });
-
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         return v;
     }
 

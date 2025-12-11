@@ -49,7 +49,7 @@ public class DangNhapFragment extends Fragment implements View.OnClickListener{
         {
             ((MainActivity)requireActivity()).frsave= new HomeFragment();
             ((MainActivity)requireActivity()).openFragment( ((MainActivity)requireActivity()).frsave,0);
-
+            ((MainActivity)requireActivity()).bottomNav.setVisibility(View.VISIBLE);
             SharedPreferences spf = requireContext().getSharedPreferences("DN", Context.MODE_PRIVATE);
             SharedPreferences.Editor edt = spf.edit();
             edt.putBoolean("DangDN",true);

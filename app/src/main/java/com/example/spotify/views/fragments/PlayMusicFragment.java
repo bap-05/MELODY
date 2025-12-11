@@ -2,6 +2,8 @@ package com.example.spotify.views.fragments;
 import static com.example.spotify.Service.MusicServiceHelper.isPlaying;
 import static com.google.common.reflect.Reflection.getPackageName;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -33,6 +36,7 @@ import com.example.spotify.Service.MusicService;
 import com.example.spotify.Service.MusicServiceHelper;
 import com.example.spotify.viewModels.MusicViewModel;
 import com.example.spotify.views.MainActivity;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 
@@ -42,7 +46,7 @@ public class PlayMusicFragment extends Fragment implements View.OnClickListener{
     private Handler handler = new Handler();
     private TextView txt_baihat, txt_tacgia;
 
-    private ImageView img_anh;
+    private ShapeableImageView img_anh;
     private String url,anh;
     private OnBackPressedCallback backCallback;
 
@@ -51,10 +55,52 @@ public class PlayMusicFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_play_music, container, false);
         addView(v);
-        btn_pause.setOnClickListener(this);
+
         btn_back.setOnClickListener(this);
         btn_next.setOnClickListener(this);
-        btn_previous.setOnClickListener(this);
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(img_anh, "rotation", 0f, 360f);
+        animator.setDuration(3000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        btn_previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(),MusicService.class);
+                intent.setAction("PREVIOUS");
+                requireContext().startService(intent);
+
+            }
+        });
+        btn_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPlaying()) {
+
+                    Intent intent = new Intent(requireContext(), MusicService.class);
+                    intent.setAction("PAUSE");
+                    requireContext().startService(intent);
+                    MusicServiceHelper.setPhat(false);
+                    animator.pause();
+
+                } else {
+                    // Gửi lệnh resume
+
+                    Intent serviceIntent = new Intent(requireContext(), MusicService.class);
+                    serviceIntent.setAction("RESUME");
+//                    serviceIntent.putExtra("url", url);
+//                    serviceIntent.putExtra("tenbai", txt_baihat.getText().toString());
+//                    serviceIntent.putExtra("tacgia", txt_tacgia.getText().toString());
+//                    serviceIntent.putExtra("anh", anh);
+                    requireContext().startService(serviceIntent);
+                    MusicServiceHelper.setPhat(true);
+                    animator.start();
+
+
+                }
+            }
+        });
+
         SharedPreferences prefs = requireContext().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
         String phatNhac = prefs.getString("phatnhac",null);
         MusicViewModel.getIsPreparing().observe(getViewLifecycleOwner(),x->{
@@ -79,10 +125,20 @@ public class PlayMusicFragment extends Fragment implements View.OnClickListener{
         });
         MusicServiceHelper.getPhat().observe(getViewLifecycleOwner(), kt->{
             if(kt)
+            {
                 btn_pause.setImageResource(R.drawable.pause);
+                animator.start();
+            }
+
             else
+            {
                 btn_pause.setImageResource(R.drawable.play_button);
+                animator.pause();
+            }
+
         });
+
+
         return v;
     }
 
@@ -162,57 +218,18 @@ public class PlayMusicFragment extends Fragment implements View.OnClickListener{
                 Intent intent = new Intent(requireContext(),MusicService.class);
                 intent.setAction("NEXT");
                 requireContext().startService(intent);
-                btn_pause.setImageResource(R.drawable.pause);
-                img.setImageResource(R.drawable.stop);
+
+
             }
-            if(v.getId()==R.id.btn_previous)
-            {
-                Intent intent = new Intent(requireContext(),MusicService.class);
-                intent.setAction("PREVIOUS");
-                requireContext().startService(intent);
-                btn_pause.setImageResource(R.drawable.pause);
-                img.setImageResource(R.drawable.stop);
-            }
-            if (v.getId() == R.id.btn_pause) {
-                if (isPlaying()) {
-
-                        Intent intent = new Intent(requireContext(), MusicService.class);
-                        intent.setAction("PAUSE");
-                        requireContext().startService(intent);
-                        btn_pause.setImageResource(R.drawable.play_button);
-                        img.setImageResource(R.drawable.play_buttton1);
-                        SharedPreferences prefs = requireContext().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("phatnhac","no");
-                        editor.apply();
-
-                } else {
-                    // Gửi lệnh resume
-
-                        Intent serviceIntent = new Intent(requireContext(), MusicService.class);
-                        serviceIntent.setAction("RESUME");
-//                    serviceIntent.putExtra("url", url);
-//                    serviceIntent.putExtra("tenbai", txt_baihat.getText().toString());
-//                    serviceIntent.putExtra("tacgia", txt_tacgia.getText().toString());
-//                    serviceIntent.putExtra("anh", anh);
-                        requireContext().startService(serviceIntent);
-                        btn_pause.setImageResource(R.drawable.pause);
-                        img.setImageResource(R.drawable.stop);
-                        SharedPreferences prefs = requireContext().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("phatnhac","yes");
-                        editor.apply();
 
 
-                }
-            }
 
             if (v.getId() == R.id.btn_back) {
                 FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
                 fr.hide(this);
                 fr.show(music);
                 fr.commit();
-                ((MainActivity)requireActivity()).hidenFooter(false);
+                ((MainActivity) requireActivity()).bottomNav.setVisibility(v.VISIBLE);
             }
 
         }

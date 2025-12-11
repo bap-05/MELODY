@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/img_itemdsphat"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/bigteam"/>
+    <TextView
+        android:id="@+id/txt_dsphat_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Name"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"/>
+    <ImageView
+        android:id="@+id/img_dsphat_them"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/add"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

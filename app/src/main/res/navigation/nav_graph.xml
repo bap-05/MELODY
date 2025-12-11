@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/wellcomeFragment">
+    <fragment
+        android:id="@+id/wellcomeFragment"
+        android:name="com.example.spotify.views.fragments.WellcomeFragment"
+        tools:layout="@layout/fragment_wellcome" />
+    <fragment
+        android:id="@+id/dangnhapemail"
+        android:name="com.example.spotify.views.fragments.DNhapemailFragment"
+        tools:layout="@layout/fragment_d_nhapemail" />
+    <fragment
+        android:id="@+id/dangnhapFragment"
+        android:name="com.example.spotify.views.fragments.DangNhapFragment"
+        tools:layout="@layout/fragment_dangnhap" />
+    <fragment
+
+        android:id="@+id/nav_home"
+        android:name="com.example.spotify.views.fragments.HomeFragment"
+        android:label="Trang chủ"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.spotify.views.fragments.SearchFragment"
+        android:label="Tìm kiếm"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/nav_rell"
+        android:name="com.example.spotify.views.fragments.ReelFragment"
+        android:label="Rell"
+        tools:layout="@layout/fragment_reel" />
+    <fragment
+        android:id="@+id/chitietns"
+        android:name="com.example.spotify.views.fragments.ChiTietNgheSiFragment"
+        tools:layout="@layout/fragment_chi_tiet_nghe_si" />
+    <fragment
+        android:id="@+id/chitiet_radio"
+        android:name="com.example.spotify.views.fragments.ChiTietRadioFragment"
+        tools:layout="@layout/fragment_chi_tiet_radio" />
+
+
+</navigation>

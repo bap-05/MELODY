@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:id="@+id/item_music"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_music"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:layout_marginBottom="5sp"
-    android:layout_marginTop="5sp"
-    >
+    android:layout_marginTop="5sp">
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="50sp"
-    android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
     <ImageView
         android:id="@+id/poster"
@@ -52,6 +55,7 @@
 
     </LinearLayout>
     <ImageView
+        android:id="@+id/img_music_more"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
@@ -60,4 +64,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

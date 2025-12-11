@@ -64,6 +64,39 @@ public class ChiTietRadioFragment extends Fragment implements View.OnClickListen
         img_cd3 = v.findViewById(R.id.ct_CD3);
         txt_ten = v.findViewById(R.id.txt_ct_name);
         txt_ns = v.findViewById(R.id.txt_nsthamgia);
+        musicAdapter.setOnItemClickListener(new MusicAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(Music ms) {
+                MusicServiceHelper.setCurrentSong(ms);
+                ViewMusicFragment vm = new ViewMusicFragment();
+                PlayMusicFragment pl = new PlayMusicFragment();
+//                            vm.setArguments(bl);
+//                            pl.setArguments(bl);
+
+                boolean sameSong = ktra != null && ktra.equals(ms.getTenBaiHat());
+                ((MainActivity)requireActivity()).hidenFooter(true);
+                ((MainActivity) requireActivity()).showFragment(pl, "PlayMusic", sameSong);
+                ((MainActivity) requireActivity()).addFragmentMusic(vm, "music", sameSong);
+                ((MainActivity) requireActivity()).bottomNav.setVisibility(v.GONE);
+                ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
+                PlayMusicFragment pl1 = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
+                if (vm1 != null) {
+                    vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
+                }
+                if (pl1 != null)
+                    pl1.btn_pause.setImageResource(R.drawable.pause);
+                ((MainActivity)requireActivity()).phatnhac(ms);
+                ktra = ms.getTenBaiHat();
+            }
+
+            @Override
+            public void onMoreClick(Music ms) {
+                MusicServiceHelper.setMusic(ms);
+                ChiTietMusicFragment chiTietMusicFragment = new ChiTietMusicFragment();
+                chiTietMusicFragment.show(requireActivity().getSupportFragmentManager(),"more");
+            }
+        });
         RadioViewModel.getRd().observe(getViewLifecycleOwner(),radio -> {
             Picasso.get().load(radio.getAnh1()).into(img_cd3);
             Picasso.get().load(radio.getAnh2()).into(img_cd2);
@@ -73,32 +106,7 @@ public class ChiTietRadioFragment extends Fragment implements View.OnClickListen
             ten = radio.getTenNgheSi();
             rcv_ct.setLayoutManager( new LinearLayoutManager(v.getContext()));
             MusicViewModel music = new ViewModelProvider(requireActivity()).get(MusicViewModel.class);
-            music.getMusicList3().observe(getViewLifecycleOwner(),lms->{
-                musicAdapter = new MusicAdapter(lms);
-                rcv_ct.setAdapter(musicAdapter);
-                musicAdapter.setOnItemClickListener(ms -> {
-                    for(Music music1 : lms)
-                        if(music1.getTenBaiHat().equals(ms.getTenBaiHat()))
-                        {
-                            MusicServiceHelper.setCurrentSong(ms);
-                            boolean sameSong = ktra != null && ktra.equals(ms.getTenBaiHat());
-                            ((MainActivity) requireActivity()).showFragment(new PlayMusicFragment(), "PlayMusic", sameSong);
-                            ((MainActivity) requireActivity()).addFragmentMusic(new ViewMusicFragment(), "music", sameSong);
-                            ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
-                            PlayMusicFragment pl = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
-                            if (vm1 != null) {
-                                vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
-                            }
-                            if (pl != null)
-                                pl.btn_pause.setImageResource(R.drawable.pause);
 
-                            ((MainActivity)requireActivity()).phatnhac(ms);
-                            ktra = ms.getTenBaiHat();
-                            break;
-                        }
-
-                });
-            });
             music.loadMusicRadio(radio);
         });
     }

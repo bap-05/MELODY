@@ -23,6 +23,7 @@ import com.example.spotify.R;
 import com.example.spotify.Service.MusicService;
 import com.example.spotify.Service.MusicServiceHelper;
 import com.example.spotify.viewModels.MusicViewModel;
+import com.example.spotify.views.MainActivity;
 import com.squareup.picasso.Picasso;
 
 
@@ -120,12 +121,7 @@ public class ViewMusicFragment extends Fragment implements View.OnClickListener{
                         Intent intent = new Intent(requireContext(), MusicService.class);
                         intent.setAction("PAUSE");
                         requireContext().startService(intent);
-                        img_stop.setImageResource(R.drawable.play_buttton1);
-                        img.setImageResource(R.drawable.play_button);
-                        SharedPreferences prefs = requireContext().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("phatnhac","no");
-                        editor.apply();
+                        MusicServiceHelper.setPhat(false);
                     }
                     else{
                         Intent serviceIntent = new Intent(requireContext(), MusicService.class);
@@ -135,12 +131,7 @@ public class ViewMusicFragment extends Fragment implements View.OnClickListener{
 //                        serviceIntent.putExtra("tacgia", txt_tacGia.getText().toString());
 //                        serviceIntent.putExtra("anh", anh);
                         requireContext().startService(serviceIntent);
-                        img_stop.setImageResource(R.drawable.stop);
-                        img.setImageResource(R.drawable.pause);
-                        SharedPreferences prefs = requireContext().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("phatnhac","yes");
-                        editor.apply();
+                        MusicServiceHelper.setPhat(true);
 
                     }
                 }
@@ -150,6 +141,7 @@ public class ViewMusicFragment extends Fragment implements View.OnClickListener{
                     fr.show(playlist);
                     fr.hide(this);
                     fr.commit();
+                    ((MainActivity) requireActivity()).bottomNav.setVisibility(v.GONE);
                 }
             }
     }

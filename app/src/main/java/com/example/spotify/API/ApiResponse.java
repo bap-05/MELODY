@@ -1,5 +1,6 @@
 package com.example.spotify.API;
 
+import com.example.spotify.models.DSPhat;
 import com.example.spotify.models.Music;
 import com.example.spotify.models.Nghesi;
 import com.example.spotify.models.Radio;
@@ -18,6 +19,12 @@ public class ApiResponse {
     private List<Radio> getradio;
     @SerializedName("getNS")
     public List<Nghesi> nghesiList;
+    @SerializedName("DSPhat")
+    private List<DSPhat> dsPhatList;
+
+    public List<DSPhat> getDsPhatList() {
+        return dsPhatList;
+    }
 
     public List<Nghesi> getNghesiList() {
         return nghesiList;

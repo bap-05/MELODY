@@ -92,7 +92,7 @@ public class DNhapemailFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         ((MainActivity)requireActivity()).frsave = new HomeFragment();
                         ((MainActivity)requireActivity()).openFragment(((MainActivity)requireActivity()).frsave = new HomeFragment(),0);
-                        ((MainActivity)requireActivity()).addFooter(new FooterFragment());
+                        ((MainActivity)requireActivity()).bottomNav.setVisibility(View.VISIBLE);
                         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("DangNhap", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("TenTK",user.getDisplayName());

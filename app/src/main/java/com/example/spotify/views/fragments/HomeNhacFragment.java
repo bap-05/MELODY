@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -86,10 +87,7 @@ public class HomeNhacFragment extends Fragment {
 //                        }
 //                        ((HomeFragment)getParentFragment()).addBody(new ChiTietNgheSiFragment());
 
-                        FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
-                        fr.add(R.id.container_body,new ChiTietNgheSiFragment());
-                        fr.addToBackStack(null);
-                        fr.commit();
+                        Navigation.findNavController(v).navigate(R.id.chitietns);
                     }
 
                 }
@@ -116,11 +114,7 @@ public class HomeNhacFragment extends Fragment {
                         if(rd.getMaRadio() == radio.getMaRadio())
                         {
                             RadioViewModel.setRd(radio);
-                            FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
-                            fr.add(R.id.container_body,new ChiTietRadioFragment());
-                            fr.addToBackStack(null);
-                            fr.commit();
-                            rdoVM.setRd(radio);
+                            Navigation.findNavController(v).navigate(R.id.chitiet_radio);
                         }
                     }
                 });

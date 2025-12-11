@@ -59,7 +59,7 @@ public class HeaderHomeFragment extends Fragment implements View.OnClickListener
 
         }
         if (v.getId()==R.id.btn_nhac && ((HomeFragment)getParentFragment()).selectedId != R.id.btn_nhac) {
-            ((HomeFragment)getParentFragment()).addBody(new HomeNhacFragment());
+            ((HomeFragment)getParentFragment()).replaceBody(new HomeNhacFragment(),true);
             btn_nhac.setBackgroundResource(R.drawable.custom_btndk);
             btn_tatca.setBackgroundResource(R.drawable.custom_btn);
             btn_podcast.setBackgroundResource(R.drawable.custom_btn);
@@ -70,7 +70,7 @@ public class HeaderHomeFragment extends Fragment implements View.OnClickListener
         }
         if(v.getId()==R.id.btn_tatca && ((HomeFragment)getParentFragment()).selectedId!= R.id.btn_tatca)
         {
-            ((HomeFragment)getParentFragment()).addBody(new HomeTatcaFragment());
+            ((HomeFragment)getParentFragment()).replaceBody(new HomeTatcaFragment(),false);
             btn_tatca.setBackgroundResource(R.drawable.custom_btndk);
             btn_nhac.setBackgroundResource(R.drawable.custom_btn);
             btn_podcast.setBackgroundResource(R.drawable.custom_btn);
@@ -81,7 +81,7 @@ public class HeaderHomeFragment extends Fragment implements View.OnClickListener
         }
         if(v.getId()==R.id.btn_bodcast&& ((HomeFragment)getParentFragment()).selectedId!= R.id.btn_bodcast)
         {
-            ((HomeFragment)getParentFragment()).addBody(new HomePodcastFragment());
+            ((HomeFragment)getParentFragment()).replaceBody(new HomePodcastFragment(),true);
             btn_podcast.setBackgroundResource(R.drawable.custom_btndk);
             btn_tatca.setBackgroundResource(R.drawable.custom_btn);
             btn_nhac.setBackgroundResource(R.drawable.custom_btn);

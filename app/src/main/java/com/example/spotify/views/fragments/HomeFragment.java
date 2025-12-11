@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -22,14 +23,14 @@ import com.example.spotify.viewModels.AccountViewModel;
 public class HomeFragment extends Fragment {
 
     public int selectedId =-1;
+    private HeaderHomeFragment headerFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_home, container, false);
 
-        addBody(new HomeTatcaFragment());
-        addfragnent(new HeaderHomeFragment());
+
         selectedId = R.id.btn_tatca;
         SharedPreferences preferences = requireContext().getSharedPreferences("DangNhap", Context.MODE_PRIVATE);
         String ten = preferences.getString("TenTK",null);
@@ -37,17 +38,35 @@ public class HomeFragment extends Fragment {
         String anh = preferences.getString("Anh",null);
         Account account = new Account(ten,anh,email);
         AccountViewModel.setAcc(account);
+        FragmentManager childFm = getChildFragmentManager();
+
+        // Kiểm tra xem Header đã có chưa
+        headerFragment = (HeaderHomeFragment) childFm.findFragmentById(R.id.contaier_header);
+        if (headerFragment == null) {
+            headerFragment = new HeaderHomeFragment();
+            childFm.beginTransaction()
+                    .replace(R.id.contaier_header, headerFragment, "header")
+                    .commit();
+        }
+
+        // Kiểm tra xem Body đã có chưa
+        Fragment currentBody = childFm.findFragmentById(R.id.contaier_body_home);
+        if (currentBody == null) {
+            // Lần đầu chạy: Add body mặc định và KHÔNG add to backstack
+            replaceBody(new HomeTatcaFragment(),false);
+            selectedId = R.id.btn_tatca;
+        }
         return v;
     }
-    private void addfragnent (Fragment fr){
+
+    public void replaceBody(Fragment fr, boolean addToBackStack) {
         FragmentTransaction ftr = getChildFragmentManager().beginTransaction();
-        ftr.add(R.id.contaier_header,fr,"header");
-        ftr.commit();
-    }
-    public void addBody(Fragment fr){
-        FragmentTransaction ftr = getChildFragmentManager().beginTransaction();
-        ftr.replace(R.id.contaier_body_home,fr);
-        ftr.addToBackStack(null);
+        ftr.replace(R.id.contaier_body_home, fr);
+
+        // Chỉ thêm vào Stack khi chuyển tab (Nhạc, Podcast), không thêm trang đầu tiên
+        if (addToBackStack) {
+            ftr.addToBackStack(null);
+        }
         ftr.commit();
     }
 

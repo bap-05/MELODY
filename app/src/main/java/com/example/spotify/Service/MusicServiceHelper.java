@@ -10,7 +10,7 @@ import com.example.spotify.models.Music;
 public class MusicServiceHelper {
     private static final MutableLiveData<Music> currentSong = new MutableLiveData<>();
     private  static MutableLiveData<Boolean> phat = new MutableLiveData<>(true);
-
+    private static MutableLiveData<Music> music = new MutableLiveData<>();
     public static MutableLiveData<Boolean> getPhat() {
         return phat;
     }
@@ -28,6 +28,14 @@ public class MusicServiceHelper {
     }
     private static MediaPlayer player;
     private static boolean isPlaying = false;
+
+    public static MutableLiveData<Music> getMusic() {
+        return music;
+    }
+
+    public static void setMusic(Music music1) {
+       music.setValue(music1);
+    }
 
     public static void setPlayer(MediaPlayer mediaPlayer) {
         player = mediaPlayer;

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -129,10 +130,11 @@ public class HomeTatcaFragment extends Fragment {
 //                            }
 //                        }
 //                        ((HomeFragment)getParentFragment()).addBody(new ChiTietNgheSiFragment());
-                        FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
-                        fr.add(R.id.container_body,new ChiTietNgheSiFragment());
-                        fr.addToBackStack(null);
-                        fr.commit();
+//                        FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
+//                        fr.add(R.id.container_body,new ChiTietNgheSiFragment());
+//                        fr.addToBackStack(null);
+//                        fr.commit();
+                        Navigation.findNavController(v).navigate(R.id.chitietns);
 
                     }
 
@@ -171,11 +173,8 @@ public class HomeTatcaFragment extends Fragment {
                         if(rd.getMaRadio() == radio.getMaRadio())
                         {
                             RadioViewModel.setRd(radio);
-                            FragmentTransaction fr = requireActivity().getSupportFragmentManager().beginTransaction();
-                            fr.add(R.id.container_body,new ChiTietRadioFragment());
-                            fr.addToBackStack(null);
-                            fr.commit();
-                            rdoVM.setRd(radio);
+                            Navigation.findNavController(v).navigate(R.id.chitiet_radio);
+
                         }
                     }
                 });
@@ -211,40 +210,37 @@ public class HomeTatcaFragment extends Fragment {
             if (musicList != null) {
                 msAdapter = new MusicAdapter(musicList);
                 rcvmusic.setAdapter(msAdapter);
+                msAdapter.setOnItemClickListener(new MusicAdapter.OnItemClickListener() {
 
-                msAdapter.setOnItemClickListener(ms -> {
-                    for (Music music : musicList) {
-                        if (ms.getTenBaiHat().equals(music.getTenBaiHat())) {
-//                            SharedPreferences prefs =requireActivity().getSharedPreferences("music_prefs", Context.MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = prefs.edit();
-//                            editor.putString("phatnhac","yes");
-//                            Bundle bl = new Bundle();
-//                            bl.putString("TenBaiHat", music.getTenBaiHat());
-//                            bl.putString("Anh", music.getAnh());
-//                            bl.putString("TacGia", music.getTenNgheSi());
-//                            bl.putString("url", music.getDuongDan());
-                            MusicServiceHelper.setCurrentSong(music);
-                            ViewMusicFragment vm = new ViewMusicFragment();
-                            PlayMusicFragment pl = new PlayMusicFragment();
+                    @Override
+                    public void onItemClick(Music ms) {
+                        MusicServiceHelper.setCurrentSong(ms);
+                        ViewMusicFragment vm = new ViewMusicFragment();
+                        PlayMusicFragment pl = new PlayMusicFragment();
 //                            vm.setArguments(bl);
 //                            pl.setArguments(bl);
 
-                            boolean sameSong = ktra != null && ktra.equals(music.getTenBaiHat());
-                            ((MainActivity)requireActivity()).hidenFooter(true);
-                            ((MainActivity) requireActivity()).showFragment(pl, "PlayMusic", sameSong);
-                            ((MainActivity) requireActivity()).addFragmentMusic(vm, "music", sameSong);
-                            ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
-                            PlayMusicFragment pl1 = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
-                            if (vm1 != null) {
-                                vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
-                            }
-                            if (pl1 != null)
-                                pl1.btn_pause.setImageResource(R.drawable.pause);
-                            phatnhac(music);
-                            ktra = music.getTenBaiHat();
-
-                            break;
+                        boolean sameSong = ktra != null && ktra.equals(ms.getTenBaiHat());
+                        ((MainActivity)requireActivity()).hidenFooter(true);
+                        ((MainActivity) requireActivity()).showFragment(pl, "PlayMusic", sameSong);
+                        ((MainActivity) requireActivity()).addFragmentMusic(vm, "music", sameSong);
+                        ((MainActivity) requireActivity()).bottomNav.setVisibility(v.GONE);
+                        ViewMusicFragment vm1 = (ViewMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("music");
+                        PlayMusicFragment pl1 = (PlayMusicFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("PlayMusic");
+                        if (vm1 != null) {
+                            vm1.img_stop.setImageResource(R.drawable.stop); // set ngay khi click play
                         }
+                        if (pl1 != null)
+                            pl1.btn_pause.setImageResource(R.drawable.pause);
+                        phatnhac(ms);
+                        ktra = ms.getTenBaiHat();
+                    }
+
+                    @Override
+                    public void onMoreClick(Music ms) {
+                        MusicServiceHelper.setMusic(ms);
+                        ChiTietMusicFragment chiTietMusicFragment = new ChiTietMusicFragment();
+                        chiTietMusicFragment.show(requireActivity().getSupportFragmentManager(),"more");
                     }
                 });
             }
